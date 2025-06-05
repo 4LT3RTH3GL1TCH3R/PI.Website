@@ -7,14 +7,14 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: #0a0a0a;
+    background: #00000;
     color: white;
     text-align: center;
     overflow: hidden;
 }
 
 nav {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0);
     padding: 10px;
     position: fixed;
     top: 0;
@@ -69,7 +69,7 @@ canvas {
     position: absolute;
     width: 10px;
     height: 10px;
-    background: white;
+    background: red;
     border-radius: 50%;
     border: 3px solid rgba(255, 255, 255, 0.7);
     pointer-events: none;
