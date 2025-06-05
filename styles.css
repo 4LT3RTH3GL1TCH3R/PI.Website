@@ -1,121 +1,54 @@
-document.addEventListener("DOMContentLoaded", () => {
-    function showPage(page) {
-        document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-        document.getElementById(page).classList.add("active");
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: none;
+}
 
-    // Set default page on load
-    showPage("main");
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0a0a0a;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+}
 
-    document.querySelectorAll("nav ul li a").forEach(button => {
-        button.addEventListener("click", (e) => {
-            e.preventDefault();
-            const pageId = e.target.getAttribute("onclick").match(/'(\w+)'/)[1];
-            showPage(pageId);
-        });
-    });
+#bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
 
-    // Cursor Customization
-    const cursor = document.getElementById("cursor");
-    document.addEventListener("mousemove", (e) => {
-        cursor.style.left = `${e.clientX}px`;
-        cursor.style.top = `${e.clientY}px`;
-    });
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+}
 
-    document.addEventListener("click", (e) => {
-        const clickEffect = document.createElement("div");
-        clickEffect.classList.add("click-effect");
-        clickEffect.style.left = `${e.clientX}px`;
-        clickEffect.style.top = `${e.clientY}px`;
-        document.body.appendChild(clickEffect);
+.center h1 {
+  font-size: 10rem;
+  font-weight: bold;
+}
 
-        setTimeout(() => {
-            clickEffect.remove();
-        }, 500);
-    });
+.center p {
+  font-size: 2rem;
+  letter-spacing: 2px;
+}
 
-    // Interactive Background
-    const canvas = document.getElementById("bgCanvas");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let points = [];
-    const numPoints = 150;
-    const maxDistance = 120;
-    let mouse = { x: null, y: null };
-
-    for (let i = 0; i < numPoints; i++) {
-        points.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 1.5,
-            vy: (Math.random() - 0.5) * 1.5
-        });
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        points.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-
-            if (p.x <= 0 || p.x >= canvas.width) p.vx *= -1;
-            if (p.y <= 0 || p.y >= canvas.height) p.vy *= -1;
-
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-            ctx.fillStyle = "white";
-            ctx.fill();
-        });
-
-        for (let i = 0; i < points.length; i++) {
-            for (let j = i + 1; j < points.length; j++) {
-                const dx = points[i].x - points[j].x;
-                const dy = points[i].y - points[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < maxDistance) {
-                    ctx.beginPath();
-                    ctx.moveTo(points[i].x, points[i].y);
-                    ctx.lineTo(points[j].x, points[j].y);
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist / maxDistance})`;
-                    ctx.lineWidth = 1;
-                    ctx.stroke();
-                }
-            }
-
-            // Connect points to cursor
-            if (mouse.x && mouse.y) {
-                const dx = points[i].x - mouse.x;
-                const dy = points[i].y - mouse.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < maxDistance * 1.5) {
-                    ctx.beginPath();
-                    ctx.moveTo(points[i].x, points[i].y);
-                    ctx.lineTo(mouse.x, mouse.y);
-                    ctx.strokeStyle = "red";
-                    ctx.lineWidth = 1;
-                    ctx.stroke();
-                }
-            }
-        }
-
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener("mousemove", (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-    });
-
-    window.addEventListener("resize", () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
-});
+.click-circle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
