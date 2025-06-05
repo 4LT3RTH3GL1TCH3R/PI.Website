@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     ctx.beginPath();
                     ctx.moveTo(points[i].x, points[i].y);
                     ctx.lineTo(mouse.x, mouse.y);
-                    ctx.strokeStyle = "cyan";
+                    ctx.strokeStyle = "red";
                     ctx.lineWidth = 1;
                     ctx.stroke();
                 }
